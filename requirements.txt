@@ -1,12 +1,4 @@
-beepy==1.0.7
-blinker==1.8.2
+beepy
 numpy==2.0.0
 pandas==2.2.2
-pillow==10.4.0
-protobuf==5.27.2
-pyarrow==16.1.0
-pydeck==0.9.1
-Pygments==2.18.0
-python-dateutil==2.9.0.post0
-pytz==2024.1
 streamlit==1.36.0
