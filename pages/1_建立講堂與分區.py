@@ -34,50 +34,52 @@ def submit(exe, name_value, type_value, dir_list, type_list):
 
 
 def main():
-    if 'error' not in st.session_state:
-        st.session_state.error = False
-
-    if 'success' not in st.session_state:
-        st.session_state.success = False
-    if 'submit_form' not in st.session_state:
-        st.session_state.submit_form = False
-    if 'room' not in st.session_state:
-        st.session_state.room = ""
-
-    st.title("建立新分區")
-
-    col1, col2 = st.columns(2)
-    with col1:
-        path = "./data"
-        dir_list = os.listdir(path)
-        name = st.selectbox("請選擇講堂...", dir_list + ["新增講堂"])
-    with col2:
-        if name != "新增講堂":
-            path2 = f"./data/{name}/count"
-            type_list = os.listdir(path2)
-            type_list = [x.replace(".csv", "") for x in type_list]
-        else:
-            name = None
-            type_list = []
-        st.selectbox("請選擇分區...", type_list)
-
-    with st.form("建立新講堂與分區"):
-        name_value = st.text_input("講堂名稱", value=name)
-        type_value = st.text_input("分區名稱", key="text_key2")
-
-        if st.session_state.submit_form:
-            st.form_submit_button("建立講堂與分區", on_click=submit,
-                                  args=[True, name_value, type_value, dir_list, type_list])
-            st.form_submit_button("取消", on_click=submit, args=[False, name_value, type_value, dir_list, type_list])
-
-        else:
-            st.form_submit_button("確認", on_click=submit_comfirm)
-
-    if st.session_state.error:
-        st.error("該分區已存在")
-
-    if st.session_state.success:
-        st.info("Success")
+    st.title(os.getcwd())
+    st.title(os.listdir(os.getcwd()))
+    # if 'error' not in st.session_state:
+    #     st.session_state.error = False
+    #
+    # if 'success' not in st.session_state:
+    #     st.session_state.success = False
+    # if 'submit_form' not in st.session_state:
+    #     st.session_state.submit_form = False
+    # if 'room' not in st.session_state:
+    #     st.session_state.room = ""
+    #
+    # st.title("建立新分區")
+    #
+    # col1, col2 = st.columns(2)
+    # with col1:
+    #     path = "./data"
+    #     dir_list = os.listdir(path)
+    #     name = st.selectbox("請選擇講堂...", dir_list + ["新增講堂"])
+    # with col2:
+    #     if name != "新增講堂":
+    #         path2 = f"./data/{name}/count"
+    #         type_list = os.listdir(path2)
+    #         type_list = [x.replace(".csv", "") for x in type_list]
+    #     else:
+    #         name = None
+    #         type_list = []
+    #     st.selectbox("請選擇分區...", type_list)
+    #
+    # with st.form("建立新講堂與分區"):
+    #     name_value = st.text_input("講堂名稱", value=name)
+    #     type_value = st.text_input("分區名稱", key="text_key2")
+    #
+    #     if st.session_state.submit_form:
+    #         st.form_submit_button("建立講堂與分區", on_click=submit,
+    #                               args=[True, name_value, type_value, dir_list, type_list])
+    #         st.form_submit_button("取消", on_click=submit, args=[False, name_value, type_value, dir_list, type_list])
+    #
+    #     else:
+    #         st.form_submit_button("確認", on_click=submit_comfirm)
+    #
+    # if st.session_state.error:
+    #     st.error("該分區已存在")
+    #
+    # if st.session_state.success:
+    #     st.info("Success")
 
 
 if __name__ == "__main__":
