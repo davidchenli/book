@@ -41,6 +41,9 @@ def main():
     file = path + "/data//1/count/2.csv"
     df = pd.read_csv(file)
     st.dataframe(df)
+    file2 = path + "./data/1/count/2.csv"
+    df2 = pd.read_csv(file2)
+    st.dataframe(df2)
 
     # if 'error' not in st.session_state:
     #     st.session_state.error = False
