@@ -37,11 +37,11 @@ def main():
     path =os.getcwd()
     st.title(path)
     st.title(os.listdir(path))
-    st.title(path+"/data//1/count")
-    file = path + "/data//1/count/2.csv"
+    st.title(path+"/data/1/count")
+    file = path + "/data/1/count/2.csv"
     df = pd.read_csv(file)
     st.dataframe(df)
-    file2 = path + "./data/1/count/2.csv"
+    file2 = path + "../data/1/count/2.csv"
     df2 = pd.read_csv(file2)
     st.dataframe(df2)
 
