@@ -12,7 +12,9 @@ def submit_delete(name_value, type_value):
     paths += "/data"
     shutil.rmtree(f"{paths}/{name_value}/real/{type_value}")
     os.remove(f"{paths}/{name_value}/count/{type_value}.csv")
-    st.session_state.submit_form = True
+    st.session_state.error = False
+    st.session_state.success = True
+    st.session_state.submit_form = False
 
 
 def submit(exe, name_value, type_value, dir_list, type_list):
@@ -86,13 +88,14 @@ def main():
         type_value = st.text_input("分區名稱", key="text_key2")
 
         if st.session_state.submit_form:
+            st.form_submit_button("刪除", on_click=submit_delete, args=[name_value, type_value])
             st.form_submit_button("建立講堂與分區", on_click=submit,
                                   args=[True, name_value, type_value, dir_list, type_list])
             st.form_submit_button("取消", on_click=submit, args=[False, name_value, type_value, dir_list, type_list])
 
         else:
             st.form_submit_button("確認", on_click=submit_comfirm)
-            st.form_submit_button("刪除", on_click=submit_delete, args=[name_value, type_value])
+
 
     if st.session_state.error:
         st.error("該分區已存在")
