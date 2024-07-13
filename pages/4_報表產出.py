@@ -91,13 +91,14 @@ def main():
         path2 = f"{paths}/{name}/count/{x}.csv"
         df = pd.read_csv(path2)
         st.dataframe(df)
-    #     df["書櫃"] = df["書櫃"].astype(str)
-    #     expect_number += sum(df["手工盤點數量"])
-    #     path = f"{paths}/{name}/real/{x}"
-    #     dir = os.listdir(path)
-    #     df3 = pd.DataFrame(columns=["書櫃", "重複的條碼數", "錯誤條碼數", "正確條碼數"])
-    #     for d in dir:
-    #         df2 = pd.read_csv(f"{paths}/{name}/real/{x}/" + d)
+        df["書櫃"] = df["書櫃"].astype(str)
+        # expect_number += sum(df["手工盤點數量"])
+        path = f"{paths}/{name}/real/{x}"
+        dir = os.listdir(path)
+        df3 = pd.DataFrame(columns=["書櫃", "重複的條碼數", "錯誤條碼數", "正確條碼數"])
+        for d in dir:
+            df2 = pd.read_csv(f"{paths}/{name}/real/{x}/" + d)
+            st.dataframe(df2)
     #         df2["check"] = df2["條碼號"].apply(check)
     #         success = set(df2.loc[df2["check"], "條碼號"].to_list())
     #         duplicates = sum(df2["check"]) - len(success)
