@@ -60,7 +60,7 @@ def main():
     path = os.getcwd()
     path += "/data"
     dir_list = os.listdir(path)
-    dir_list = [x for x in dir_list if "csv" not in x]
+    dir_list.remove("default")
 
     name = st.selectbox("請選擇講堂...", dir_list)
 

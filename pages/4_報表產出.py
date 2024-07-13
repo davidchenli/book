@@ -68,7 +68,7 @@ def main():
         return
 
     dir_list = os.listdir(paths)
-    dir_list = [x for x in dir_list if "csv" not in x]
+    dir_list.remove("default")
     name = st.selectbox("請選擇講堂...", dir_list)
     if name is None:
         return

@@ -113,7 +113,7 @@ def main():
     col1, col2 = st.columns(2)
     with col1:
         dir_list = os.listdir(path)
-        dir_list = [x for x in dir_list if "csv" not in x]
+        dir_list.remove("default")
         name = st.selectbox("請選擇講堂...", dir_list)
     with col2:
         if name:
@@ -185,7 +185,7 @@ def main():
         )
     if st.session_state.error:
         # beep(sound='error')
-        st.audio(f'{path}/error.mp3', format='audio/mp3')
+        st.audio(f'{path}/default/error.mp3', format='audio/mp3')
         st.error(st.session_state.message)
 
     st.write(f"已處理條碼號/條碼號總數 {df['條碼號'].nunique()}/{target}")
