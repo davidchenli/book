@@ -89,7 +89,7 @@ def main():
         dir = os.listdir(path)
         df3 = pd.DataFrame(columns=["書櫃", "duplicates", "number_fail", "number_success"])
         for d in dir:
-            df2 = pd.read_csv(f"{path}/{name}/real/{x}/" + d)
+            df2 = pd.read_csv(f"{paths}/{name}/real/{x}/" + d)
             df2["check"] = df2["條碼號"].apply(check)
             success = set(df2.loc[df2["check"], "條碼號"].to_list())
 
