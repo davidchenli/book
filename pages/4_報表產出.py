@@ -101,7 +101,8 @@ def main():
                                 columns=["書櫃", "重複的條碼數", "錯誤條碼數", "正確條碼數"])
 
             out = pd.DataFrame(success, columns=["條碼號"])
-            out["書櫃"] = d
+            out["書櫃"] = d.replace(".csv","")
+            out["分區"] = x
             out_df = pd.concat([out_df, out])
             df3 = pd.concat([df3, temp])
 
