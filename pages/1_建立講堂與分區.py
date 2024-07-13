@@ -1,9 +1,17 @@
 import streamlit as st
 import pandas as pd
-import os
+import os, shutil
 
 
 def submit_comfirm():
+    st.session_state.submit_form = True
+
+
+def submit_delete(name_value, type_value):
+    paths = os.getcwd()
+    paths += "/data"
+    shutil.rmtree(f"{paths}/{name_value}/real/{type_value}")
+    os.remove(f"{paths}/{name_value}/count/{type_value}.csv")
     st.session_state.submit_form = True
 
 
@@ -79,6 +87,7 @@ def main():
 
         else:
             st.form_submit_button("確認", on_click=submit_comfirm)
+            st.form_submit_button("刪除", on_click=submit_delete, args=[name_value, type_value])
 
     if st.session_state.error:
         st.error("該分區已存在")
