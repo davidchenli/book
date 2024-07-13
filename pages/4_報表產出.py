@@ -61,7 +61,7 @@ def main():
     if st.session_state.click_to_delete:
         st.button("上一頁", on_click=unclick_to_delete)
         st.write(st.session_state.delete_name)
-        with open(f'{paths}/archive.zip', "rb") as file:
+        with open(f'{os.getcwd()}/archive.zip', "rb") as file:
             st.download_button(
                 label="匯出全部檔案",
                 data=file,
