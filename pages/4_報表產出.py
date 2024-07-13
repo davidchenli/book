@@ -118,6 +118,7 @@ def main():
     st.write(f'''{name} 一共盤點 {len(out_df["條碼號"])} 本書,預期應有 {expect_number} 本''')
     col1, col2, col3 = st.columns(3)
     with col1:
+        output_df= output_df[["分區" ,"書櫃","手工盤點數量","重複的條碼數","錯誤條碼數","正確條碼數"]]
 
         st.download_button(
             label="一鍵匯出報表",
@@ -126,7 +127,7 @@ def main():
             mime="text/csv")
 
     with col2:
-
+        out_df = out_df[["分區","書櫃", "條碼號"]]
         st.download_button(
             label="一鍵匯出條碼號",
             data=out_df.to_csv(index=False).encode("utf-8"),
