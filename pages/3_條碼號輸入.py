@@ -176,9 +176,6 @@ def main():
         )
     if st.session_state.error:
         file = f"{path}/default/error.mp3"
-        os.system("mpg123 " + file)
-        os.system("afplay " + file)
-        st.audio(f'{path}/default/error.mp3', format='audio/mp3')
         st.error(st.session_state.message)
 
     st.write(f"已處理條碼號/條碼號總數 {df['條碼號'].nunique()}/{target}")

@@ -79,8 +79,8 @@ def main():
 
     issue = pd.DataFrame(columns=["分區", "書櫃"])
     output = {}
-    out_df = pd.DataFrame()
-    output_df = pd.DataFrame()
+    out_df = pd.DataFrame(columns=["條碼號"])
+    output_df = pd.DataFrame(columns=["分區", "書櫃", "手工盤點數量", "重複的條碼數", "錯誤條碼數", "正確條碼數"])
     expect_number = 0
     for x in dir_list:
         path2 = f"{paths}/{name}/count/{x}.csv"
@@ -94,14 +94,13 @@ def main():
             df2 = pd.read_csv(f"{paths}/{name}/real/{x}/" + d)
             df2["check"] = df2["條碼號"].apply(check)
             success = set(df2.loc[df2["check"], "條碼號"].to_list())
-
             duplicates = sum(df2["check"]) - len(success)
             fail = sum(~df2["check"])
             temp = pd.DataFrame([[d.replace(".csv", ""), duplicates, fail, len(success)]],
                                 columns=["書櫃", "重複的條碼數", "錯誤條碼數", "正確條碼數"])
 
             out = pd.DataFrame(success, columns=["條碼號"])
-            out["書櫃"] = d.replace(".csv","")
+            out["書櫃"] = d.replace(".csv", "")
             out["分區"] = x
             out_df = pd.concat([out_df, out])
             df3 = pd.concat([df3, temp])
@@ -119,7 +118,7 @@ def main():
     st.write(f'''{name} 一共盤點 {len(out_df["條碼號"])} 本書,預期應有 {expect_number} 本''')
     col1, col2, col3 = st.columns(3)
     with col1:
-        output_df= output_df[["分區" ,"書櫃","手工盤點數量","重複的條碼數","錯誤條碼數","正確條碼數"]]
+        output_df = output_df[["分區", "書櫃", "手工盤點數量", "重複的條碼數", "錯誤條碼數", "正確條碼數"]]
 
         st.download_button(
             label="一鍵匯出報表",
@@ -128,7 +127,7 @@ def main():
             mime="text/csv")
 
     with col2:
-        out_df = out_df[["分區","書櫃", "條碼號"]]
+        out_df = out_df[["分區", "書櫃", "條碼號"]]
         st.download_button(
             label="一鍵匯出條碼號",
             data=out_df.to_csv(index=False).encode("utf-8"),
