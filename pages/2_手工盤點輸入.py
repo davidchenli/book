@@ -89,7 +89,7 @@ def main():
             if not st.session_state.confirm:
                 st.button("確認", on_click=click_confirm)
             else:
-                st.button("儲存當前修改", on_click=click_button, args=[edit_df, file_path])
+                st.button("儲存", on_click=click_button, args=[edit_df, file_path])
 
         if st.session_state.click_upload_button_state:
             uploaded_file = st.file_uploader("Choose a CSV file")
