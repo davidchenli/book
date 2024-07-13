@@ -85,7 +85,7 @@ def main():
 
     with st.form("建立新講堂與分區"):
         name_value = st.text_input("講堂名稱", value=name)
-        type_value = st.text_input("分區名稱", key="text_key2", value=type)
+        type_value = st.text_input("分區名稱", value=type)
 
         if st.session_state.submit_form:
             st.form_submit_button("刪除", on_click=submit_delete, args=[name_value, type_value])
