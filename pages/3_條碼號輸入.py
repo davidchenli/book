@@ -3,7 +3,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import time
-# from beepy import beep
+from beepy import beep
 
 
 
@@ -182,7 +182,7 @@ def main():
             args=[file_path, df["條碼號"].to_list()]
         )
     if st.session_state.error:
-        # beep(sound='error')
+        beep(sound='error')
         st.error(st.session_state.message)
 
     st.write(f"已處理條碼號/條碼號總數 {df['條碼號'].nunique()}/{target}")
