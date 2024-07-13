@@ -116,7 +116,7 @@ def main():
         st.download_button(
             label="下載盤點表",
             data=csv,
-            file_name="large_df.csv",
+            file_name="盤點表.csv",
             mime="text/csv")
 
     if st.session_state.error:

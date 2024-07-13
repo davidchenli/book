@@ -1,11 +1,6 @@
 import streamlit as st
-
-import numpy as np
 import pandas as pd
-
 import os, shutil
-
-import csv
 
 
 def check(code):
@@ -35,7 +30,9 @@ def unclick_button():
 
 
 def click_to_delete(name):
+    paths = os.getcwd()
     st.session_state.delete_name = name
+    shutil.make_archive("archive", 'zip', f'{paths}/{name}')
     st.session_state.click_to_delete = True
 
 
@@ -64,6 +61,14 @@ def main():
     if st.session_state.click_to_delete:
         st.button("上一頁", on_click=unclick_to_delete)
         st.write(st.session_state.delete_name)
+        with open(f'{paths}/archive.zip', "rb") as file:
+            st.download_button(
+                label="匯出全部檔案",
+                data=file,
+                file_name="存檔.zip",
+                mime='application/zip'
+
+            )
         st.button("一鍵清除資料", on_click=delete, args=[st.session_state.delete_name])
         return
 
@@ -123,7 +128,7 @@ def main():
         st.download_button(
             label="一鍵匯出報表",
             data=output_df.to_csv(index=False).encode("utf-8"),
-            file_name="large_df.csv",
+            file_name="盤點報表.csv",
             mime="text/csv")
 
     with col2:
@@ -131,8 +136,8 @@ def main():
         st.download_button(
             label="一鍵匯出條碼號",
             data=out_df.to_csv(index=False).encode("utf-8"),
-            file_name="large_df.txt")
-        # mime="text/csv")
+            file_name="條碼號.csv",
+            mime="text/csv")
 
     with col3:
         st.button("清除資料", on_click=click_to_delete, args=[name])
