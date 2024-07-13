@@ -1,16 +1,7 @@
 import streamlit as st
 
-import numpy as np
 import pandas as pd
-import time
-
-# from beepy import beep
-
-
-
-
 import os
-
 import csv
 
 def click_upload_button():
@@ -184,7 +175,9 @@ def main():
             args=[file_path, df["條碼號"].to_list()]
         )
     if st.session_state.error:
-        # beep(sound='error')
+        file = f"{path}/default/error.mp3"
+        os.system("mpg123 " + file)
+        os.system("afplay " + file)
         st.audio(f'{path}/default/error.mp3', format='audio/mp3')
         st.error(st.session_state.message)
 
