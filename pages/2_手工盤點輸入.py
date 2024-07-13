@@ -89,6 +89,7 @@ def main():
     df = pd.read_csv(file_path)
 
     if st.session_state.clicked:
+        st.session_state.error = False
 
         if st.session_state.click_edit_button_state:
             edit_df = st.data_editor(df, num_rows="dynamic")
