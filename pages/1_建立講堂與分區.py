@@ -23,8 +23,6 @@ def submit(exe, name_value, type_value, dir_list, type_list):
                 df = pd.DataFrame(columns=["書櫃", "手工盤點數量"])
                 df.to_csv(f"{path}/{name_value}/count/{type_value}.csv", index=False)
                 os.mkdir(f"{path}/{name_value}/real/{type_value}")
-                df = pd.DataFrame(columns=["default"])
-                df.to_csv(f"{path}/{name_value}/real/{type_value}.csv", index=False)
                 st.session_state.success = True
         elif pd.isnull(name_value):
             st.session_state.error = True
@@ -35,16 +33,12 @@ def submit(exe, name_value, type_value, dir_list, type_list):
             df = pd.DataFrame(columns=["書櫃", "手工盤點數量"])
             df.to_csv(f"{path}/{name_value}/count/{type_value}.csv", index=False)
             os.mkdir(f"{path}/{name_value}/real/{type_value}")
-            df = pd.DataFrame(columns=["default"])
-            df.to_csv(f"{path}/{name_value}/real/{type_value}.csv", index=False)
-
-
 
             st.session_state.success = True
 
 
 def main():
-    path =os.getcwd()
+    path = os.getcwd()
     path += "/data"
 
     if 'error' not in st.session_state:
