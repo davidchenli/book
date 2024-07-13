@@ -67,7 +67,6 @@ def main():
         st.button("一鍵清除資料", on_click=delete, args=[st.session_state.delete_name])
         return
 
-
     dir_list = os.listdir(paths)
     dir_list = [x for x in dir_list if "csv" not in x]
     name = st.selectbox("請選擇講堂...", dir_list)
@@ -80,7 +79,7 @@ def main():
 
     issue = pd.DataFrame(columns=["分區", "書櫃"])
     output = {}
-    out_list = []
+    out_df = pd.DataFrame()
     output_df = pd.DataFrame()
     expect_number = 0
     for x in dir_list:
@@ -101,19 +100,22 @@ def main():
             temp = pd.DataFrame([[d.replace(".csv", ""), duplicates, fail, len(success)]],
                                 columns=["書櫃", "duplicates", "number_fail", "number_success"])
 
-            out_list += list(success)
+            out = pd.DataFrame(success, columns=["條碼號"])
+            out["書櫃"] = d
+            out_df = pd.concat([out_df, out])
             df3 = pd.concat([df3, temp])
 
         out = df.merge(df3, how="left", on="書櫃").fillna(0)
         out["分區"] = x
-        output[x] = out[["書櫃","手工盤點數量","duplicates", "number_fail", "number_success"]]
-        issue_flag = (out["duplicates"] != 0) | (out["number_fail"] != 0) | (out["number_success"] != out["手工盤點數量"])
+        output[x] = out[["書櫃", "手工盤點數量", "重複的條碼數", "錯誤條碼數", "正確條碼數"]]
+        issue_flag = (out["duplicates"] != 0) | (out["number_fail"] != 0) | (
+                    out["number_success"] != out["手工盤點數量"])
         df_out = out[issue_flag]
         issue = pd.concat([issue, df_out[["分區", "書櫃"]]])
         output_df = pd.concat([output_df, out])
 
     st.dataframe(issue)
-    st.write(f'''{name}一共盤點{len(out_list)}本書,預期應有{expect_number}本''')
+    st.write(f'''{name} 一共盤點 {len(out_df["條碼號"])} 本書,預期應有 {expect_number} 本''')
     col1, col2, col3 = st.columns(3)
     with col1:
 
@@ -124,10 +126,10 @@ def main():
             mime="text/csv")
 
     with col2:
-        csv = "\n".join(out_list)
+
         st.download_button(
             label="一鍵匯出條碼號",
-            data=csv,
+            data=out_df.to_csv(index=False).encode("utf-8"),
             file_name="large_df.txt")
         # mime="text/csv")
 
