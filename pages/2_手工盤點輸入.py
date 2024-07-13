@@ -30,8 +30,14 @@ def upload(dataframe, file_path):
 
 
 def click_button(edit_df, file_path):
-    edit_df["書櫃"] = edit_df["書櫃"].astype(str)
-    edit_df.to_csv(file_path, index=False)
+    try:
+        edit_df["書櫃"] = edit_df["書櫃"].astype(str)
+        edit_df["手工盤點數量"] = edit_df["手工盤點數量"].astype(int)
+        edit_df.to_csv(file_path, index=False)
+    except:
+        st.session_state.error = True
+        st.session_state.message = "資料有誤"
+
     st.session_state.clicked = False
     st.session_state.click_edit_button_state = False
     st.session_state.confirm = False
