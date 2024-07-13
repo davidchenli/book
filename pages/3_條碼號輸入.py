@@ -185,6 +185,7 @@ def main():
         )
     if st.session_state.error:
         # beep(sound='error')
+        st.audio(f'{path}/error.mp3', format='audio/mp3')
         st.error(st.session_state.message)
 
     st.write(f"已處理條碼號/條碼號總數 {df['條碼號'].nunique()}/{target}")
