@@ -98,7 +98,7 @@ def main():
             duplicates = sum(df2["check"]) - len(success)
             fail = sum(~df2["check"])
             temp = pd.DataFrame([[d.replace(".csv", ""), duplicates, fail, len(success)]],
-                                columns=["書櫃", "duplicates", "number_fail", "number_success"])
+                                columns=["書櫃", "重複的條碼數", "錯誤條碼數", "正確條碼數"])
 
             out = pd.DataFrame(success, columns=["條碼號"])
             out["書櫃"] = d
@@ -108,8 +108,8 @@ def main():
         out = df.merge(df3, how="left", on="書櫃").fillna(0)
         out["分區"] = x
         output[x] = out[["書櫃", "手工盤點數量", "重複的條碼數", "錯誤條碼數", "正確條碼數"]]
-        issue_flag = (out["duplicates"] != 0) | (out["number_fail"] != 0) | (
-                    out["number_success"] != out["手工盤點數量"])
+        issue_flag = (out["重複的條碼數"] != 0) | (out["錯誤條碼數"] != 0) | (
+                out["正確條碼數"] != out["手工盤點數量"])
         df_out = out[issue_flag]
         issue = pd.concat([issue, df_out[["分區", "書櫃"]]])
         output_df = pd.concat([output_df, out])
