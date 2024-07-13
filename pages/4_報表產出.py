@@ -32,7 +32,7 @@ def unclick_button():
 def click_to_delete(name):
     paths = os.getcwd()
     st.session_state.delete_name = name
-    shutil.make_archive("archive", 'zip', f'{paths}/{name}')
+    shutil.make_archive("archive", 'zip', f'{paths}/data/{name}')
     st.session_state.click_to_delete = True
 
 
