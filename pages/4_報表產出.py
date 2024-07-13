@@ -71,7 +71,7 @@ def main():
     if name is None:
         return
 
-    path2 = f"{path}/{name}/count"
+    path2 = f"{paths}/{name}/count"
     dir_list = os.listdir(path2)
     dir_list = [x.replace(".csv", "") for x in dir_list]
 
