@@ -4,11 +4,19 @@ import pandas as pd
 import os
 import csv
 
+
 def click_upload_button():
     st.session_state.click_upload_button_state = True
-def upload(exe,dataframe, file_path):
+
+
+def upload(exe, dataframe, file_path):
     if exe:
-        dataframe.to_csv(file_path, index=False)
+        try:
+            dataframe = dataframe[["條碼號"]]
+            dataframe.to_csv(file_path, index=False)
+        except:
+            st.session_state.error = True
+            st.session_state.message = "上傳格式有誤"
     st.session_state.click_upload_button_state = False
     st.session_state.clicked = False
 
@@ -148,7 +156,7 @@ def main():
             if uploaded_file is not None:
                 dataframe = pd.read_csv(uploaded_file, index_col=False)
                 st.dataframe(dataframe)
-                st.button("儲存", on_click=upload, args=[True,dataframe, file_path])
+                st.button("儲存", on_click=upload, args=[True, dataframe, file_path])
                 st.button("取消", on_click=upload, args=[False, dataframe, file_path])
         else:
 
@@ -175,7 +183,6 @@ def main():
             args=[file_path, df["條碼號"].to_list()]
         )
     if st.session_state.error:
-        file = f"{path}/default/error.mp3"
         st.error(st.session_state.message)
 
     st.write(f"已處理條碼號/條碼號總數 {df['條碼號'].nunique()}/{target}")
@@ -183,4 +190,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

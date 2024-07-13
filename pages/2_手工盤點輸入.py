@@ -19,11 +19,12 @@ def click_upload_button():
 
 def upload(dataframe, file_path):
     try:
-        dataframe = dataframe[["書櫃","手工盤點數量"]].copy()
+        dataframe = dataframe[["書櫃", "手工盤點數量"]].copy()
         dataframe["書櫃"] = dataframe["書櫃"].astype(str)
         dataframe.to_csv(file_path, index=False)
     except:
-        pass
+        st.session_state.error = True
+        st.session_state.message = "上傳格式有誤"
     st.session_state.click_upload_button_state = False
     st.session_state.clicked = False
 
@@ -55,6 +56,9 @@ def main():
         st.session_state.click_upload_button_state = False
     if 'confirm' not in st.session_state:
         st.session_state.confirm = False
+
+    if 'error' not in st.session_state:
+        st.session_state.error = False
 
     st.title("手工盤點結果新增")
     path = os.getcwd()
@@ -114,6 +118,9 @@ def main():
             data=csv,
             file_name="large_df.csv",
             mime="text/csv")
+
+    if st.session_state.error:
+        st.error(st.session_state.message)
 
 
 if __name__ == "__main__":
