@@ -72,9 +72,9 @@ def main():
         st.button("一鍵清除資料", on_click=delete, args=[st.session_state.delete_name])
         return
 
-    # dir_list = os.listdir(paths)
-    # dir_list.remove("default")
-    # name = st.selectbox("請選擇講堂...", dir_list)
+    dir_list = os.listdir(paths)
+    dir_list.remove("default")
+    name = st.selectbox("請選擇講堂...", dir_list)
     # if name is None:
     #     return
     #
