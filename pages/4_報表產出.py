@@ -128,15 +128,15 @@ def main():
     #         file_name="large_df.txt")
     #     # mime="text/csv")
 
-    with col3:
-        st.button("清除資料", on_click=click_to_delete, args=[name])
+    # with col3:
+    st.button("清除資料", on_click=click_to_delete, args=[name])
 
-    if len(dir_list):
-        outs = st.tabs(dir_list)
-        for x, y in zip(dir_list, outs):
-            with y:
-                st.header(x)
-                st.dataframe(output[x])
+    # if len(dir_list):
+    #     outs = st.tabs(dir_list)
+    #     for x, y in zip(dir_list, outs):
+    #         with y:
+    #             st.header(x)
+    #             st.dataframe(output[x])
 
 
 if __name__ == "__main__":
