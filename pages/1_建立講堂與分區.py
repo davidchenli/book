@@ -45,7 +45,9 @@ def main():
     path += f"/{name}"
     b = os.listdir(path)
     type = st.selectbox("請選擇講堂...", b)
-    st.write(type)
+    path += f"/{type}"
+    c = os.listdir(path)
+    st.selectbox("請選擇講堂...", c)
 
 
 
