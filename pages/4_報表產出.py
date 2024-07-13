@@ -98,7 +98,8 @@ def main():
         df3 = pd.DataFrame(columns=["書櫃", "重複的條碼數", "錯誤條碼數", "正確條碼數"])
         for d in dir:
             df2 = pd.read_csv(f"{paths}/{name}/real/{x}/" + d)
-            st.dataframe(df2["條碼號"])
+            st.write(list(df2.columns))
+            # st.dataframe(df2["條碼號"])
     #         df2["check"] = df2["條碼號"].apply(check)
     #         success = set(df2.loc[df2["check"], "條碼號"].to_list())
     #         duplicates = sum(df2["check"]) - len(success)
