@@ -89,7 +89,7 @@ def main():
         expect_number += sum(df["手工盤點數量"])
         path = f"{paths}/{name}/real/{x}"
         dir = os.listdir(path)
-        df3 = pd.DataFrame(columns=["書櫃", "duplicates", "number_fail", "number_success"])
+        df3 = pd.DataFrame(columns=["書櫃", "重複的條碼數", "錯誤條碼數", "正確條碼數"])
         for d in dir:
             df2 = pd.read_csv(f"{paths}/{name}/real/{x}/" + d)
             df2["check"] = df2["條碼號"].apply(check)
