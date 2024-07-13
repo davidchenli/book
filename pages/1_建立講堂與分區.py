@@ -62,6 +62,7 @@ def main():
     col1, col2 = st.columns(2)
     with col1:
         dir_list = os.listdir(path)
+        dir_list = [x for x in dir_list if "csv" not in x]
         name = st.selectbox("請選擇講堂...", dir_list + ["新增講堂"])
     with col2:
         if name != "新增講堂":
