@@ -46,14 +46,14 @@ def submit(exe, name_value, type_value, dir_list, type_list):
 def main():
     path =os.getcwd()
     path += "/data"
-    a = os.listdir(path)
-    name = st.selectbox("請選擇講堂...", a)
-    path += f"/{name}"
-    b = os.listdir(path)
-    type = st.selectbox("請選擇講堂...", b)
-    path += f"/{type}"
-    c = os.listdir(path)
-    st.selectbox("請選擇講堂...", c)
+    # a = os.listdir(path)
+    # name = st.selectbox("請選擇講堂...", a)
+    # path += f"/{name}"
+    # b = os.listdir(path)
+    # type = st.selectbox("請選擇講堂...", b)
+    # path += f"/{type}"
+    # c = os.listdir(path)
+    # st.selectbox("請選擇講堂...", c)
 
 
 
