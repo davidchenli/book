@@ -31,6 +31,11 @@ def main():
     else:
         st.write("無購買書籍")
 
+    st.download_button(
+        label="一鍵匯出報表",
+        data=df_purchase.to_csv(index=False).encode("utf-8"),
+        file_name="購買書籍清單.csv",
+        mime="text/csv")
 
 
 if __name__ == "__main__":
