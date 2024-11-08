@@ -38,10 +38,12 @@ def main():
 
         df = pd.read_csv(f"{path}/df2.csv").drop(columns=["Unnamed: 0"])
         df_storage = pd.read_csv(f"{path}/df_out.csv").drop(columns=["Unnamed: 0"])
+        df_p = pd.read_csv(f"{path}/df3.csv").drop(columns=["Unnamed: 0"])
 
         dataframe = df[df["ISBN"] == st.session_state.text_key]
 
         dataframe2 = df_storage[df_storage["ISBN"] == st.session_state.text_key]
+        dataframe4 = df_p[df_p["ISBN"] == st.session_state.text_key]
         st.title("查詢結果")
 
         if dataframe.shape[0] > 0:
@@ -62,7 +64,9 @@ def main():
         df_purchase = pd.read_csv(f"{path}/purchase.csv")
         df_purchase["ISBN"] = df_purchase["ISBN"].astype(str)
         dataframe3 = df_purchase[df_purchase["ISBN"] == st.session_state.text_key]
+
         st.write(f'''已購買數量:{dataframe3.shape[0]}''')
+        st.write(f'''基金會購買數量:{dataframe4.shape[0]}''')
 
         col1, col2 = st.columns(2)
         with col1:
