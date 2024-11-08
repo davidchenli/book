@@ -37,8 +37,11 @@ def main():
     if st.session_state.text_key != "":
 
         df = pd.read_csv(f"{path}/df2.csv").drop(columns=["Unnamed: 0"])
+        df["ISBN"] = df["ISBN"].astype(str)
         df_storage = pd.read_csv(f"{path}/df_out.csv").drop(columns=["Unnamed: 0"])
+        df_storage["ISBN"] = df_storage["ISBN"].astype(str)
         df_p = pd.read_csv(f"{path}/df3.csv").drop(columns=["Unnamed: 0"])
+        df_p["ISBN"] = df_p["ISBN"].astype(str)
 
         dataframe = df[df["ISBN"] == st.session_state.text_key]
 
