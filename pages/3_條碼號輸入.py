@@ -175,7 +175,12 @@ def main():
 
     else:
         st.button("條碼號異動", on_click=unclick_button)
-        st.dataframe(df)
+        st.dataframe(
+            data=df,
+            width=700,  # 表格寬度（預設自動）
+            height=400,  # 表格高度（預設自動）
+            use_container_width=True  # 撐滿容器寬度
+        )
         st.text_input(
             "請輸入條碼號",
             key='text_key',
