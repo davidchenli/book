@@ -102,7 +102,11 @@ def main():
             uploaded_file = st.file_uploader("Choose a CSV file")
             if uploaded_file is not None:
                 dataframe = pd.read_csv(uploaded_file, index_col=False)
-                st.dataframe(dataframe)
+                st.dataframe(
+                    data=dataframe,
+                    width=700,  # 表格寬度（預設自動）
+                    height=400,  # 表格高度（預設自動）
+                )
                 st.button("click to save", on_click=upload, args=[dataframe, file_path])
 
         if not st.session_state.click_upload_button_state and not st.session_state.click_edit_button_state:
@@ -113,11 +117,19 @@ def main():
                 st.button("上傳盤點表", on_click=click_upload_button)
             with col3:
                 st.button("刪除盤點表", on_click=click, args=[file_path])
-            st.dataframe(df)
-
+            st.dataframe(
+                data=df,
+                width=700,  # 表格寬度（預設自動）
+                height=400,  # 表格高度（預設自動）
+            )
     else:
         st.button("盤點表異動", on_click=unclick_button)
-        st.dataframe(df)
+        st.dataframe(
+            data=df,
+            width=700,  # 表格寬度（預設自動）
+            height=400,  # 表格高度（預設自動）
+        )
+
         df["書櫃"] = df["書櫃"].astype(str)
         csv = df.to_csv(index=False).encode("utf-8")
         st.download_button(

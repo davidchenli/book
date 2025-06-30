@@ -120,7 +120,12 @@ def main():
         issue = pd.concat([issue, df_out[["分區", "書櫃"]]])
         output_df = pd.concat([output_df, out])
 
-    st.dataframe(issue)
+    st.dataframe(
+        data=issue,
+        width=700,  # 表格寬度（預設自動）
+        height=400,  # 表格高度（預設自動）
+    )
+
     st.write(f'''{name} 一共盤點 {len(out_df["條碼號"])} 本書,預期應有 {expect_number} 本''')
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -148,7 +153,11 @@ def main():
         for x, y in zip(dir_list, outs):
             with y:
                 st.header(x)
-                st.dataframe(output[x])
+                st.dataframe(
+                    data=output[x],
+                    width=700,  # 表格寬度（預設自動）
+                    height=400,  # 表格高度（預設自動）
+                )
 
 
 if __name__ == "__main__":

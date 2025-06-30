@@ -155,7 +155,11 @@ def main():
             uploaded_file = st.file_uploader("點擊上傳條碼號")
             if uploaded_file is not None:
                 dataframe = pd.read_csv(uploaded_file, index_col=False)
-                st.dataframe(dataframe)
+                st.dataframe(
+                    data=dataframe,
+                    width=700,  # 表格寬度（預設自動）
+                    height=400,  # 表格高度（預設自動）
+                )
                 st.button("儲存", on_click=upload, args=[True, dataframe, file_path])
                 st.button("取消", on_click=upload, args=[False, dataframe, file_path])
         else:
@@ -163,7 +167,12 @@ def main():
             col1, col2, col3, col4 = st.columns(4)
             with col1:
                 st.button("編輯條碼號", on_click=click_edit_button)
-                st.dataframe(df)
+                st.dataframe(
+                    data=df,
+                    width=700,  # 表格寬度（預設自動）
+                    height=400,  # 表格高度（預設自動）
+                )
+
             with col2:
                 st.button("上傳條碼號", on_click=click_upload_button)
             with col3:
@@ -179,7 +188,6 @@ def main():
             data=df,
             width=700,  # 表格寬度（預設自動）
             height=400,  # 表格高度（預設自動）
-            use_container_width=True  # 撐滿容器寬度
         )
         st.text_input(
             "請輸入條碼號",
