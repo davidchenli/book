@@ -146,7 +146,7 @@ def main():
 
     if st.session_state.clicked:
         if st.session_state.click_edit_button_state:
-            edit_df = st.data_editor(df, num_rows="dynamic")
+            edit_df = st.data_editor(df, num_rows="dynamic", use_container_width=True)
             if not st.session_state.confirm:
                 st.button("確認", on_click=click_confirm)
             else:
