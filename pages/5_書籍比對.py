@@ -1,90 +1,111 @@
+import csv
+import os
+import pandas as pd
 import streamlit as st
 
-import pandas as pd
-import os
-import csv
+STORAGE_PATH = os.path.join(os.getcwd(), "data", "default", "storage")
+
+
+def get_file_path(filename):
+    return os.path.join(STORAGE_PATH, filename)
+
+
+def ensure_purchase_file_exists():
+    file_path = get_file_path("購買.csv")
+    if not os.path.exists(file_path) or os.path.getsize(file_path) == 0:
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        with open(file_path, "w", encoding="utf-8", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(["ISBN"])
 
 
 def purchase():
-    path = os.getcwd()
-    path += "/data/default/storage"
-    file_path = f'''{path}/purchase.csv'''
-    with open(file_path, 'a') as csvfile:
-        writer = csv.writer(csvfile, delimiter=',')
-        writer.writerow([st.session_state.text_key])
-    st.session_state.text_key = ''
+    isbn = st.session_state.text_key.strip()
+    if not isbn:
+        return
+
+    ensure_purchase_file_exists()
+    file_path = get_file_path("購買.csv")
+
+    with open(file_path, "a", encoding="utf-8", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow([isbn])
+        csvfile.flush()
+
+    st.session_state.last_message = f"✅ 已成功購買 ISBN: {isbn}"
+    st.session_state.text_key = ""
 
 
 def cancel():
-    st.session_state.text_key = ''
+    st.session_state.text_key = ""
 
 
 def main():
-    if 'clicked' not in st.session_state:
-        st.session_state.clicked = False
-    if 'error' not in st.session_state:
-        st.session_state.error = False
+    st.title("館藏比對與購買系統")
 
-    st.title("館藏比對")
-    path = os.getcwd()
-    path += "/data/default/storage"
+    ensure_purchase_file_exists()
 
-    st.text_input(
-        "請輸入ISBN號",
-        key='text_key'
-    )
+    if "last_message" in st.session_state and st.session_state.last_message:
+        st.success(st.session_state.last_message)
+        st.session_state.last_message = ""
 
-    if st.session_state.text_key != "":
+    st.text_input("請輸入 ISBN 號", key="text_key")
 
-        df = pd.read_csv(f"{path}/df2.csv").drop(columns=["Unnamed: 0"])
-        df["ISBN"] = df["ISBN"].astype(str)
-        df_storage = pd.read_csv(f"{path}/df_out.csv").drop(columns=["Unnamed: 0"])
-        df_storage["ISBN"] = df_storage["ISBN"].astype(str)
-        df_p = pd.read_csv(f"{path}/df3.csv").drop(columns=["Unnamed: 0"])
-        df_p["ISBN"] = df_p["ISBN"].astype(str)
+    current_isbn = st.session_state.text_key.strip()
 
-        dataframe = df[df["ISBN"] == st.session_state.text_key]
+    if current_isbn != "":
+        try:
+            df_market = pd.read_csv(get_file_path("書單.csv"), dtype={"ISBN": str})
+            df_storage = pd.read_csv(get_file_path("館藏.csv"), dtype={"ISBN": str})
+            df_foundation = pd.read_csv(get_file_path("基金會.csv"), dtype={"ISBN": str})
+            df_purchase = pd.read_csv(get_file_path("購買.csv"), dtype={"ISBN": str})
 
-        dataframe2 = df_storage[df_storage["ISBN"] == st.session_state.text_key]
-        dataframe4 = df_p[df_p["ISBN"] == st.session_state.text_key]
-        st.title("查詢結果")
+        except Exception as e:
+            st.error(f"讀取資料檔案時發生錯誤：{e}")
+            return
 
-        if dataframe.shape[0] > 0:
-            name = dataframe["書名"].values[0]
-            st.write(name)
-            st.write("出版商資料\n")
-            st.dataframe(dataframe)
+        df_market["ISBN"] = df_market["ISBN"].str.strip()
+        df_storage["ISBN"] = df_storage["ISBN"].str.strip()
+        df_foundation["ISBN"] = df_foundation["ISBN"].str.strip()
+        df_purchase["ISBN"] = df_purchase["ISBN"].str.strip()
+
+        df_market_select = df_market[df_market["ISBN"] == current_isbn]
+        df_storage_select = df_storage[df_storage["ISBN"] == current_isbn]
+        df_foundation_select = df_foundation[df_foundation["ISBN"] == current_isbn]
+        df_purchase_select = df_purchase[df_purchase["ISBN"] == current_isbn]
+
+        st.divider()
+        st.header("🔍 查詢結果")
+
+        if not df_market_select.empty:
+            name = df_market_select["書名"].values[0]
+            st.subheader(f"📖 書名：{name}")
+            st.dataframe(df_market_select, use_container_width=True)
         else:
-            st.write("查無出版商資料")
+            st.warning("查無出版商書單資料")
 
-        if dataframe2.shape[0] > 0:
-
-            number = dataframe2["條碼號"].values[0]
-            st.write(f'''館藏數量:{number}''')
+        if not df_storage_select.empty:
+            number = df_storage_select["數量"].values[0]
+            st.info(f"🏛️ 館藏現有數量：**{number}** 本")
         else:
-            st.write("查無館藏資料")
+            st.info("🏛️ 館藏現有數量：**0** 本（查無館藏資料）")
 
-        df_purchase = pd.read_csv(f"{path}/purchase.csv")
-        df_purchase["ISBN"] = df_purchase["ISBN"].astype(str)
-        dataframe3 = df_purchase[df_purchase["ISBN"] == st.session_state.text_key]
+        col_stat1, col_stat2 = st.columns(2)
+        with col_stat1:
+            st.metric("🛒 已購買數量", len(df_purchase_select))
+        with col_stat2:
+            if df_foundation_select.empty:
+                num = 0
+            else:
+                num = df_foundation_select["數量"].values[0]
+            st.metric("🏢 基金會購買數量", num)
 
-        st.write(f'''已購買數量:{dataframe3.shape[0]}''')
-        st.write(f'''基金會購買數量:{dataframe4.shape[0]}''')
-
+        st.divider()
         col1, col2 = st.columns(2)
         with col1:
-
-            st.button(
-                label="確認購買",
-                on_click=purchase
-            )
-
+            st.button("確認購買", on_click=purchase, type="primary", use_container_width=True)
         with col2:
-
-            st.button(
-                label="取消",
-                on_click=cancel
-            )
+            st.button("取消", on_click=cancel, use_container_width=True)
 
 
 if __name__ == "__main__":
